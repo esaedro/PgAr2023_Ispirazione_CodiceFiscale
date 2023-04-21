@@ -67,6 +67,10 @@ public class Persona {
         this.codiceFiscale = codiceFiscale;
     }
 
+
+    /**
+     * Genera l'intero codice da 16 caratteri generando le parti necessarie e unendole
+     */
     public void calcolaCodiceFiscale(){
         StringBuffer codiceFiscale = new StringBuffer();
         

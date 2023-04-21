@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Calendar;
 //import java.util.GregorianCalendar;
 
+/**
+ * Classe non istanziabile usata per generare il codice fiscale usando i dati conosciuti della persona
+ */
 public class GeneraCodiceFiscale {
     public static final int LUNGHEZZA = 16;
     public static final int INCREMENTO_MESE_DONNA = 40;
@@ -60,18 +63,24 @@ public class GeneraCodiceFiscale {
     }
 
 
-/*    public static void main(String[] args) {
+ /*    public static void main(String[] args) {
         String nome = "Luca";
 
-        Calendar data = new GregorianCalendar(1987, 1, 26);
+        Calendar data = new GregorianCalendar(1987, 12, 26);
 
-        System.out.println(calcolaCaratteriNomeCognome(nome));
+       System.out.println(calcolaCaratteriNomeCognome(nome));
 
-        System.out.println(calcolaCifreGiorno(data, Sesso.Femmina));
-        System.out.println(Calendar.JANUARY);
+       System.out.println(calcolaCifreGiorno(data, Sesso.Femmina));
+        
         System.out.println(calcolaCarattereMese(data));
     } */
 
+
+    /**
+     * Genera e restituisce i tre caratteri corrispondenti a nome/cognome nel codice fiscale
+     * @param nome
+     * @return
+     */
     public static String calcolaCaratteriNomeCognome (String nome) {
         StringBuffer codiceNome = new StringBuffer();
         String nomeMaiuscolo = nome.toUpperCase();
@@ -108,11 +117,22 @@ public class GeneraCodiceFiscale {
         return codiceNome.toString();
     }
 
+
+    /**
+     * Restituisce le ultime due cifre dell'anno di nascita da inserire nel codice fiscale
+     * @param data 
+     * @return
+     */
     public static String calcolaCifreAnno (Calendar data) {
         int anno = data.get(Calendar.YEAR);
         return Integer.toString(anno).substring(2, 4);
     }
     
+    /**
+     * Restituisce il carattere corrispondente al mese di nascita da inserire nel codice fiscale
+     * @param data
+     * @return
+     */
     public static String calcolaCarattereMese (Calendar data) {
         int numeroMese = data.get(Calendar.MONTH); 
         Mese mese = Mese.values()[numeroMese];
@@ -120,6 +140,12 @@ public class GeneraCodiceFiscale {
         return LETTERE_MESI.get(mese).toString();
     }
 
+    /**
+     * Restituisce le due cifre corrispondenti al giorno di nascita, considerato il sesso della persona, da inserire nel codice fiscale
+     * @param data
+     * @param sesso
+     * @return
+     */
     public static String calcolaCifreGiorno (Calendar data, Sesso sesso) {
         int giorno = data.get(Calendar.DAY_OF_MONTH);
 
