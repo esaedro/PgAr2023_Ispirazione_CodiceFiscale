@@ -68,8 +68,19 @@ public class Persona {
     }
 
     public void calcolaCodiceFiscale(){
+        StringBuffer codiceFiscale = new StringBuffer();
+        
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCaratteriNomeCognome(nome));
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCaratteriNomeCognome(cognome));
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCifreAnno(dataDiNascita));
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCarattereMese(dataDiNascita));
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCifreGiorno(dataDiNascita, sesso));
 
-        setCodiceFiscale(codiceFiscale);
+        //append codice comune
+
+        //append carattere controllo
+
+        setCodiceFiscale(codiceFiscale.toString());
     }
 
 }

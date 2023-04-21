@@ -2,6 +2,7 @@ package Arnaldo;
 
 import java.util.HashMap;
 import java.util.Calendar;
+//import java.util.GregorianCalendar;
 
 public class GeneraCodiceFiscale {
     public static final int LUNGHEZZA = 16;
@@ -58,39 +59,68 @@ public class GeneraCodiceFiscale {
         return GIORNI_MESI;
     }
 
-/*     public String calcolaCaratteriNomeCognome (String nome) {
+
+/*    public static void main(String[] args) {
+        String nome = "Luca";
+
+        Calendar data = new GregorianCalendar(1987, 1, 26);
+
+        System.out.println(calcolaCaratteriNomeCognome(nome));
+
+        System.out.println(calcolaCifreGiorno(data, Sesso.Femmina));
+        System.out.println(Calendar.JANUARY);
+        System.out.println(calcolaCarattereMese(data));
+    } */
+
+    public static String calcolaCaratteriNomeCognome (String nome) {
         StringBuffer codiceNome = new StringBuffer();
-        
-        for (char carattere : nome.toCharArray()) {
-            
+        String nomeMaiuscolo = nome.toUpperCase();
+
+        for (char carattere : nomeMaiuscolo.toCharArray()) {
+            if (String.valueOf(carattere).matches("[^AEIOU ]")) {
+                codiceNome.append(carattere);
+
+                if (codiceNome.length() >= 3) {
+                    break;
+                }
+            }
         }
-    } */
+       
+        if (codiceNome.length() < 3) {
 
-    /* 
-    public String calcolaCaratteriCognome (String cognome) {
-        StringBuffer codiceCognome = new StringBuffer();
+            for (char carattere : nomeMaiuscolo.toCharArray()) {
+                if (String.valueOf(carattere).matches("[AEIOU]")) {
+                    codiceNome.append(carattere);
+    
+                    if (codiceNome.length() >= 3) {
+                        break;
+                    }
+                }
+            }
+        }
 
+        if (codiceNome.length() < 3) {
+            while (codiceNome.length() < 3) {
+                codiceNome.append("X");
+            }
+        }
 
-        return codiceCognome.toString().toUpperCase();
-    } */
+        return codiceNome.toString();
+    }
 
-
-
-
-
-    public String calcolaCifreAnno (Calendar data) {
+    public static String calcolaCifreAnno (Calendar data) {
         int anno = data.get(Calendar.YEAR);
         return Integer.toString(anno).substring(2, 4);
     }
     
-    public String calcolaCarattereMese (Calendar data) {
-        int numeroMese = data.get(Calendar.MONTH) - 1; 
+    public static String calcolaCarattereMese (Calendar data) {
+        int numeroMese = data.get(Calendar.MONTH); 
         Mese mese = Mese.values()[numeroMese];
 
         return LETTERE_MESI.get(mese).toString();
     }
 
-    public String calcolaCifreGiorno (Calendar data, Sesso sesso) {
+    public static String calcolaCifreGiorno (Calendar data, Sesso sesso) {
         int giorno = data.get(Calendar.DAY_OF_MONTH);
 
         if (sesso.equals(Sesso.Femmina)) {
