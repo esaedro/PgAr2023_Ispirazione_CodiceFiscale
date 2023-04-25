@@ -2,6 +2,8 @@ package Arnaldo;
 
 import java.util.Calendar;
 
+import javax.xml.stream.XMLStreamException;
+
 public class Persona {
     private String nome;
     private String cognome;
@@ -10,13 +12,13 @@ public class Persona {
     private String comuneDiNascita;
     private String codiceFiscale;
 
-    public Persona(String nome, String cognome, Sesso sesso, Calendar dataDiNascita, String comuneDiNascita, String codiceFiscale) {
+    public Persona(String nome, String cognome, Sesso sesso, Calendar dataDiNascita, String comuneDiNascita) throws XMLStreamException {
         this.nome = nome;
         this.cognome = cognome;
         this.sesso = sesso;
         this.dataDiNascita = dataDiNascita;
         this.comuneDiNascita = comuneDiNascita;
-        this.codiceFiscale = codiceFiscale;
+        this.codiceFiscale = calcolaCodiceFiscale();
     }
 
     public String getNome() {
@@ -71,7 +73,7 @@ public class Persona {
     /**
      * Genera l'intero codice da 16 caratteri generando le parti necessarie e unendole
      */
-    public void calcolaCodiceFiscale(){
+    public String calcolaCodiceFiscale() throws XMLStreamException {
         StringBuffer codiceFiscale = new StringBuffer();
         
         codiceFiscale.append(GeneraCodiceFiscale.calcolaCaratteriNomeCognome(nome));
@@ -79,12 +81,10 @@ public class Persona {
         codiceFiscale.append(GeneraCodiceFiscale.calcolaCifreAnno(dataDiNascita));
         codiceFiscale.append(GeneraCodiceFiscale.calcolaCarattereMese(dataDiNascita));
         codiceFiscale.append(GeneraCodiceFiscale.calcolaCifreGiorno(dataDiNascita, sesso));
+        codiceFiscale.append(GeneraCodiceFiscale.trovaCodiceComune(comuneDiNascita));
+        codiceFiscale.append(GeneraCodiceFiscale.calcolaCarattereDiControllo(codiceFiscale.toString()));
 
-        //append codice comune
-
-        //append carattere controllo
-
-        setCodiceFiscale(codiceFiscale.toString());
+        return codiceFiscale.toString();
     }
 
 }

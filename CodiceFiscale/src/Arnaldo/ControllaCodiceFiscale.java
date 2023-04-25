@@ -94,8 +94,8 @@ public class ControllaCodiceFiscale {
         }
     }
 
-    public static boolean controllaCodiceComune(String codice) {
-        // TODO: controllare se codice.substring(11,15) compare nella lista dei codici del comune
+    public static boolean controllaCodiceComune(String codiceFiscale) {
+        // TODO: controllare se codiceFiscale.substring(11,15) compare nella lista dei codici del comune
     }
 
     public static boolean controllaCarattereDiControllo(String codice) {

@@ -1,6 +1,9 @@
 package Arnaldo;
 
 import java.util.HashMap;
+
+import javax.xml.stream.XMLStreamException;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -9,7 +12,7 @@ import java.util.GregorianCalendar;
  */
 public class GeneraCodiceFiscale {
     public static final int LUNGHEZZA = 16;
-    public static final int INCREMENTO_MESE_DONNA = 40;
+    public static final int INCREMENTO_GIORNO_DONNA = 40;
     final static HashMap<Character, Integer> CONVERSIONE_CARATTERI_DISPARI = new HashMap<>() {{
         put('0', 1);
         put('1', 0);
@@ -122,7 +125,7 @@ public class GeneraCodiceFiscale {
     }
 
     public static int getIncrementoMeseDonna() {
-        return INCREMENTO_MESE_DONNA;
+        return INCREMENTO_GIORNO_DONNA;
     }
 
     public static HashMap<Character, Integer> getCONVERSIONE_CARATTERI_DISPARI() {
@@ -230,7 +233,7 @@ public class GeneraCodiceFiscale {
         int giorno = data.get(Calendar.DAY_OF_MONTH);
 
         if (sesso.equals(Sesso.Femmina)) {
-            giorno += INCREMENTO_MESE_DONNA;
+            giorno += INCREMENTO_GIORNO_DONNA;
         }
         
         return Integer.toString(giorno);
@@ -253,8 +256,8 @@ public class GeneraCodiceFiscale {
         return String.valueOf(carattereDiControllo);
     }
 
-    public static String trovaCodiceComune(String comune) {
-        // TODO: Trovare il codice del comune a partire dal suo nome
+    public static String trovaCodiceComune(String comune) throws XMLStreamException {
+        return LettoreXML.trovaCodiceComune(comune);
     }
 
 }
