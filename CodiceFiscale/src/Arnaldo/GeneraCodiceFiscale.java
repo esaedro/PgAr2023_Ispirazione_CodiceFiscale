@@ -253,4 +253,8 @@ public class GeneraCodiceFiscale {
         return String.valueOf(carattereDiControllo);
     }
 
+    public static String trovaCodiceComune(String comune) {
+        // TODO: Trovare il codice del comune a partire dal suo nome
+    }
+
 }
