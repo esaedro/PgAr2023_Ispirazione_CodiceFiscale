@@ -89,26 +89,32 @@ public class ScrittoreXML {
             //<codici> 
                 xmlw.writeCharacters("\n\t");
                 xmlw.writeStartElement("codici");
+                xmlw.writeCharacters("\n\t\t");
                 xmlw.writeStartElement("invalidi");
                 xmlw.writeAttribute("numero", Integer.valueOf(codiciInvalidi.size()).toString());
                 for (String codice : codiciInvalidi) {
+                    xmlw.writeCharacters("\n\t\t\t");
                     xmlw.writeStartElement("codice");
                     xmlw.writeCharacters(codice);
                     xmlw.writeEndElement();
                 }
+                xmlw.writeCharacters("\n\t\t");
                 xmlw.writeEndElement();
 
+                xmlw.writeCharacters("\n\t\t");
                 xmlw.writeStartElement("spaiati");
                 xmlw.writeAttribute("numero", Integer.valueOf(codiciValidi.size()).toString());
                 for (String codice : codiciValidi) {
+                    xmlw.writeCharacters("\n\t\t\t");
                     xmlw.writeStartElement("codice");
                     xmlw.writeCharacters(codice);
                     xmlw.writeEndElement();
-                } 
+                }
+                xmlw.writeCharacters("\n\t\t");
                 xmlw.writeEndElement();
-
+                xmlw.writeCharacters("\n\t");
                 xmlw.writeEndElement();  // chiusura codici
-
+            xmlw.writeCharacters("\n");
             xmlw.writeEndElement();  // chiusura output
 
             xmlw.writeEndDocument();
