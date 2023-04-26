@@ -53,17 +53,32 @@ public class ControllaCodiceFiscale {
     }
 
     public static boolean controllaCaratteriNome(String codice) {
-        return codice.substring(0, 3).matches("[A-Z]");
+        for (char carattere : codice.substring(0, 3).toCharArray()) {
+            if (String.valueOf(carattere).matches("[^A-Z]")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean controllaCaratteriCognome(String codice) {
-        return codice.substring(3, 6).matches("[A-Z]");
+        for (char carattere : codice.substring(3, 6).toCharArray()) {
+            if (String.valueOf(carattere).matches("[^A-Z]")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean controllaCifreAnno(String codice) {
-        int anno = Integer.valueOf(codice.substring(6, 8));
-
-        return anno >= 0 && anno <= 99;
+        try {
+            int anno = Integer.valueOf(codice.substring(6, 8));
+            return anno >= 0 && anno <= 99;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static boolean controllaCarattereMese(String codice) {
@@ -71,9 +86,17 @@ public class ControllaCodiceFiscale {
     }
 
     public static boolean controllaCifreGiorno(String codice) {
-        int anno = Integer.valueOf(codice.substring(6, 8));
-        char mese = codice.charAt(8);
-        int giorno = Integer.valueOf(codice.substring(9, 11));
+        int anno = 0;
+        char mese = '\0';
+        int giorno = 0;
+
+        try {
+            anno = Integer.valueOf(codice.substring(6, 8));
+            mese = codice.charAt(8);
+            giorno = Integer.valueOf(codice.substring(9, 11));
+        } catch (Exception e) {
+            return false;
+        }
 
         switch (mese) {
             case 'S':
@@ -94,8 +117,8 @@ public class ControllaCodiceFiscale {
         }
     }
 
-    public static boolean controllaCodiceComune(String codiceFiscale) {
-        // TODO: controllare se codiceFiscale.substring(11,15) compare nella lista dei codici del comune
+    public static boolean controllaCodiceComune(String codice) {
+        return LettoreXML.controllaPresenzaComune(codice.substring(11, 15));      
     }
 
     public static boolean controllaCarattereDiControllo(String codice) {

@@ -18,7 +18,7 @@ public class Persona {
         this.sesso = sesso;
         this.dataDiNascita = dataDiNascita;
         this.comuneDiNascita = comuneDiNascita;
-        this.codiceFiscale = calcolaCodiceFiscale();
+        this.codiceFiscale = calcolaCodiceFiscale(nome, cognome, sesso, dataDiNascita, comuneDiNascita);
     }
 
     public String getNome() {
@@ -73,7 +73,7 @@ public class Persona {
     /**
      * Genera l'intero codice da 16 caratteri generando le parti necessarie e unendole
      */
-    public String calcolaCodiceFiscale() throws XMLStreamException {
+    public String calcolaCodiceFiscale(String nome, String cognome, Sesso sesso, Calendar dataDiNascita, String comuneDiNascita) throws XMLStreamException {
         StringBuffer codiceFiscale = new StringBuffer();
         
         codiceFiscale.append(GeneraCodiceFiscale.calcolaCaratteriNomeCognome(nome));
