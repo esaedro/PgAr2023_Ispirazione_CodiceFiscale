@@ -2,10 +2,7 @@ package Arnaldo;
 
 import java.util.HashMap;
 
-import javax.xml.stream.XMLStreamException;
-
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Classe non istanziabile usata per generare il codice fiscale usando i dati conosciuti della persona
@@ -145,24 +142,10 @@ public class GeneraCodiceFiscale {
     }
 
 
-/*    public static void main(String[] args) {
-        String nome = "Luca";
-    
-        Calendar data = new GregorianCalendar(1987, 12, 26);
-    
-        System.out.println(calcolaCaratteriNomeCognome(nome));
-
-        System.out.println(calcolaCifreGiorno(data, Sesso.Femmina));
-
-        System.out.println(calcolaCarattereMese(data));
-
-    } */
-
-
     /**
      * Genera e restituisce i tre caratteri corrispondenti a nome/cognome nel codice fiscale
      * @param nome
-     * @return
+     * @return nome/cognome
      */
     public static String calcolaCaratteriNomeCognome (String nome) {
         StringBuffer codiceNome = new StringBuffer();
@@ -204,7 +187,7 @@ public class GeneraCodiceFiscale {
     /**
      * Restituisce le ultime due cifre dell'anno di nascita da inserire nel codice fiscale
      * @param data 
-     * @return
+     * @return anno
      */
     public static String calcolaCifreAnno (Calendar data) {
         int anno = data.get(Calendar.YEAR);
@@ -214,7 +197,7 @@ public class GeneraCodiceFiscale {
     /**
      * Restituisce il carattere corrispondente al mese di nascita da inserire nel codice fiscale
      * @param data
-     * @return
+     * @return mese
      */
     public static String calcolaCarattereMese (Calendar data) {
         int numeroMese = data.get(Calendar.MONTH); 
@@ -227,7 +210,7 @@ public class GeneraCodiceFiscale {
      * Restituisce le due cifre corrispondenti al giorno di nascita, considerato il sesso della persona, da inserire nel codice fiscale
      * @param data
      * @param sesso
-     * @return
+     * @return giorno
      */
     public static String calcolaCifreGiorno (Calendar data, Sesso sesso) {
         int giorno = data.get(Calendar.DAY_OF_MONTH);
@@ -239,16 +222,21 @@ public class GeneraCodiceFiscale {
         return Integer.toString(giorno);
     }
 
+    /**
+     * Restituisce il carattere di controllo di un codice fiscale calcolato utilizzando le restanti 15 cifre del codice
+     * @param restoDelCodice
+     * @return carattereDiControllo
+     */
     public static String calcolaCarattereDiControllo(String restoDelCodice){
         char carattereDiControllo;
         int somma = 0;
 
         for (int i = 0; i < restoDelCodice.length(); i += 2) {
-            somma += CONVERSIONE_CARATTERI_PARI.get(restoDelCodice.charAt(i));
+            somma += CONVERSIONE_CARATTERI_DISPARI.get(restoDelCodice.charAt(i));
         }
 
         for (int i = 1; i < restoDelCodice.length(); i += 2) {
-            somma += CONVERSIONE_CARATTERI_DISPARI.get(restoDelCodice.charAt(i));
+            somma += CONVERSIONE_CARATTERI_PARI.get(restoDelCodice.charAt(i));
         }
 
         carattereDiControllo = (char)('A' + (somma % 26));        
@@ -256,7 +244,12 @@ public class GeneraCodiceFiscale {
         return String.valueOf(carattereDiControllo);
     }
 
-    public static String trovaCodiceComune(String comune) throws XMLStreamException {
+    /**
+     * Restituisce il codice del comune dato il suo nome
+     * @param comune
+     * @return codiceComune
+     */
+    public static String trovaCodiceComune(String comune) {
         return LettoreXML.trovaCodiceComune(comune);
     }
 

@@ -3,16 +3,16 @@ package Arnaldo;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
 public class ScrittoreXML { 
     private static final String FILE_CODICI_PERSONE = System.getProperty("user.dir") + "/file_XML/CodiciPersone.xml";
 
-    public static void main(String[] args) {
-        generaFileOutput();
-    }
-
+    /**
+     * Genera il file di output richiesto dall'esercizio
+     */
     public static void generaFileOutput() {
         XMLOutputFactory xmlof = null;
         XMLStreamWriter xmlw = null;
@@ -64,7 +64,7 @@ public class ScrittoreXML {
                     xmlw.writeCharacters("\n");
                     xmlw.writeCharacters("\t\t\t");
                     xmlw.writeStartElement("data_nascita");
-                    xmlw.writeCharacters(listaDellePersone.get(i).getDataDiNascita().get(Calendar.YEAR) + "-" + String.format("%02d", listaDellePersone.get(i).getDataDiNascita().get(Calendar.MONTH)) + "-" + String.format("%02d", listaDellePersone.get(i).getDataDiNascita().get(Calendar.DAY_OF_MONTH)));
+                    xmlw.writeCharacters(listaDellePersone.get(i).getDataDiNascita().get(Calendar.YEAR) + "-" + String.format("%02d", listaDellePersone.get(i).getDataDiNascita().get(Calendar.MONTH) + 1) + "-" + String.format("%02d", listaDellePersone.get(i).getDataDiNascita().get(Calendar.DAY_OF_MONTH)));
                     xmlw.writeEndElement();
                     xmlw.writeCharacters("\n");
                     xmlw.writeCharacters("\t\t\t");

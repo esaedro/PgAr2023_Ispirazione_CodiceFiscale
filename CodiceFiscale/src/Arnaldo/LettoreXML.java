@@ -14,20 +14,13 @@ public class LettoreXML {
     private static final String FILE_PERSONE = System.getProperty("user.dir") + "/file_XML/InputPersone.xml";
     private static final String FILE_CODICI_FISCALI = System.getProperty("user.dir") + "/file_XML/CodiciFiscali.xml";
 
-    public static void main(String[] args) throws XMLStreamException {
-/*         for (Persona persona : creaPersone()) {
-            System.out.println(persona);
-        }
-        System.out.println(trovaCodiceComune("AGLIANO TERME"));
-        for (ArrayList<String> vettore : leggiControllaCodiciFiscali()){
-            System.out.println();
-            for (String stringa : vettore) {
-                System.out.println(stringa);
-            }
-        } */
-    }
-    
-    public static String trovaCodiceComune(String nomeComune) throws XMLStreamException {
+    /**
+     * Restituisce il codice del comune dato il suo nome
+     * 
+     * @param nomeComune
+     * @return codiceComune
+     */
+    public static String trovaCodiceComune(String nomeComune) {
         XMLInputFactory xmlif = null;
         XMLStreamReader xmlr = null;
         String tag = "";
@@ -40,27 +33,39 @@ public class LettoreXML {
             System.out.println(e.getMessage());
         }
 
-        while (xmlr.hasNext()) {
-            switch (xmlr.getEventType()) {
-                case XMLStreamReader.START_ELEMENT:
-                    tag = xmlr.getLocalName();
-                    break;
-                
-                case XMLStreamReader.CHARACTERS:
-                    if (tag.equals("nome")) {
-                        if (xmlr.getText().equals(nomeComune)) {
-                            for (int i = 0; i < 4; i++, xmlr.next());
-                            return xmlr.getText();
-                        }
-                    }
+        try {
+            while (xmlr.hasNext()) {
+                switch (xmlr.getEventType()) {
+                    case XMLStreamReader.START_ELEMENT:
+                        tag = xmlr.getLocalName();
+                        break;
 
-                    break;
+                    case XMLStreamReader.CHARACTERS:
+                        if (tag.equals("nome")) {
+                            if (xmlr.getText().equals(nomeComune)) {
+                                for (int i = 0; i < 4; i++, xmlr.next())
+                                    ;
+                                return xmlr.getText();
+                            }
+                        }
+
+                        break;
+                }
+                xmlr.next();
             }
-            xmlr.next();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
         }
         return "Non trovato";
     }
 
+    /**
+     * Cerca nella lista dei comuni se esiste un comune con il dato codice:
+     * restituisce vero se esiste un comune con quel codice, altrimenti falso
+     * 
+     * @param codiceComune
+     * @return boolean
+     */
     public static boolean controllaPresenzaComune(String codiceComune) {
         XMLInputFactory xmlif = null;
         XMLStreamReader xmlr = null;
@@ -81,9 +86,9 @@ public class LettoreXML {
                     case XMLStreamReader.START_ELEMENT:
                         tag = xmlr.getLocalName();
                         break;
-                    
+
                     case XMLStreamReader.CHARACTERS:
-                        if(tag.equals("codice") && xmlr.getText().trim().equals(codiceComune)) {
+                        if (tag.equals("codice") && xmlr.getText().trim().equals(codiceComune)) {
                             return true;
                         }
 
@@ -91,13 +96,20 @@ public class LettoreXML {
                 }
                 xmlr.next();
             }
-        } catch(XMLStreamException e) {
+        } catch (XMLStreamException e) {
             System.out.println("ERORR");
         }
         return false;
     }
 
-    public static ArrayList<ArrayList<String>> leggiControllaCodiciFiscali() throws XMLStreamException {
+    /**
+     * Suddivide i codici fiscali dell'omonimo file in codici validi e invalidi
+     * restituendoli in una matrice di due righe: nella prima riga si trovano i
+     * codici validi, nella seconda quelli invalidi
+     * 
+     * @return ArrayList<ArrayList<String>>
+     */
+    public static ArrayList<ArrayList<String>> leggiControllaCodiciFiscali() {
         XMLInputFactory xmlif = null;
         XMLStreamReader xmlr = null;
         String tag = "";
@@ -113,30 +125,38 @@ public class LettoreXML {
             System.out.println(e.getMessage());
         }
 
-        while (xmlr.hasNext()) {
-            switch (xmlr.getEventType()) {
-                case XMLStreamReader.START_ELEMENT:
-                    tag = xmlr.getLocalName();
-                    break;
+        try {
+            while (xmlr.hasNext()) {
+                switch (xmlr.getEventType()) {
+                    case XMLStreamReader.START_ELEMENT:
+                        tag = xmlr.getLocalName();
+                        break;
 
-                case XMLStreamReader.CHARACTERS:
-                    if (tag.equals("codice") && !xmlr.getText().trim().isEmpty()) {
-                        if (ControllaCodiceFiscale.controllaCodiceIntero(xmlr.getText())) {
-                            codici.get(0).add(xmlr.getText());
-                        } else {
-                            codici.get(1).add(xmlr.getText());
+                    case XMLStreamReader.CHARACTERS:
+                        if (tag.equals("codice") && !xmlr.getText().trim().isEmpty()) {
+                            if (ControllaCodiceFiscale.controllaCodiceIntero(xmlr.getText())) {
+                                codici.get(0).add(xmlr.getText());
+                            } else {
+                                codici.get(1).add(xmlr.getText());
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
+                xmlr.next();
             }
-            xmlr.next();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
         }
 
         return codici;
     }
 
-       public static ArrayList<Persona> creaPersone() throws XMLStreamException {
-        ArrayList <Persona> listaPersone = new ArrayList<>();
+    /**
+     * Restituisce un ArrayList contenente tutte le persone del file di input con i rispettivi attributi
+     * @return ArrayList<Persona>
+     */
+    public static ArrayList<Persona> creaPersone() {
+        ArrayList<Persona> listaPersone = new ArrayList<>();
         String nome = "";
         String cognome = "";
         Sesso sesso = null;
@@ -155,57 +175,64 @@ public class LettoreXML {
             System.out.println(e.getMessage());
         }
 
-        while (xmlr.hasNext()) {
-            switch (xmlr.getEventType()) {
-                case XMLStreamReader.START_ELEMENT:
-                    tag = xmlr.getLocalName();
-                    break;
+        try {
+            while (xmlr.hasNext()) {
+                switch (xmlr.getEventType()) {
+                    case XMLStreamReader.START_ELEMENT:
+                        tag = xmlr.getLocalName();
+                        break;
 
-                case XMLStreamReader.CHARACTERS:
-                    if (!(xmlr.getText().trim().isEmpty())) {
-                        switch (tag) {
-                            case "nome":
-                                nome = xmlr.getText();
-                                break;
+                    case XMLStreamReader.CHARACTERS:
+                        if (!(xmlr.getText().trim().isEmpty())) {
+                            switch (tag) {
+                                case "nome":
+                                    nome = xmlr.getText();
+                                    break;
 
-                            case "cognome":
-                                cognome = xmlr.getText();
-                                break;
+                                case "cognome":
+                                    cognome = xmlr.getText();
+                                    break;
 
-                            case "sesso":
-                                if (xmlr.getText().equals("M")) {
-                                    sesso = Sesso.Maschio;
-                                } else {
-                                    sesso = Sesso.Femmina;
-                                }
-                                break;
-                            case "comune_nascita":
-                                comuneDiNascita = xmlr.getText();
-                                break;
-                            case "data_nascita":
-                                String data = xmlr.getText();
-                                String anno = data.substring(0, 4);
-                                String mese = data.substring(5, 7);
-                                String giorno = data.substring(8, data.length());
-                                dataDiNascita = new GregorianCalendar(Integer.parseInt(anno), Integer.parseInt(mese) - 1, Integer.parseInt(giorno));
-                                break;
-                            default:
-                                break;
+                                case "sesso":
+                                    if (xmlr.getText().equals("M")) {
+                                        sesso = Sesso.Maschio;
+                                    } else {
+                                        sesso = Sesso.Femmina;
+                                    }
+                                    break;
+                                case "comune_nascita":
+                                    comuneDiNascita = xmlr.getText();
+                                    break;
+                                case "data_nascita":
+                                    String data = xmlr.getText();
+                                    String anno = data.substring(0, 4);
+                                    String mese = data.substring(5, 7);
+                                    String giorno = data.substring(8, data.length());
+                                    dataDiNascita = new GregorianCalendar(Integer.parseInt(anno),
+                                            Integer.parseInt(mese) - 1, Integer.parseInt(giorno));
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                    break;
-                case XMLStreamReader.END_ELEMENT:
-                    tag = xmlr.getLocalName();
-                    if (tag.equals("persona")) {
-                        listaPersone.add(new Persona(nome, cognome, sesso, dataDiNascita, comuneDiNascita));
-                    }
-                    break;
-            }
+                        break;
+                    case XMLStreamReader.END_ELEMENT:
+                        tag = xmlr.getLocalName();
+                        if (tag.equals("persona")) {
+                            listaPersone.add(new Persona(nome, cognome, sesso, dataDiNascita, comuneDiNascita));
+                        }
+                        break;
+                }
 
-            xmlr.next();
+                xmlr.next();
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
         }
 
         return listaPersone;
     }
-    
+
 }
